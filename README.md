@@ -3,6 +3,3 @@ A reverse proxy is a server that sits between client devices and a web server, f
 
 
 
-
-kmkmtrkktrnjkntrjkntrjknktrf
-kfnklthkltrnktrnlhklhl
