@@ -1,0 +1,34 @@
+version: '3.3'
+networks:
+ wln_network:
+    external: true
+
+services:
+   my_app_laravel:
+#     build:
+#     context: .
+#      dockerfile: Dockerfile
+     container_name: laravel_container
+     depends_on:
+       - mysql
+     image: hala722/laravel:latest
+     volumes:
+       - ./:/var/www/localhost/htdocs/
+#     ports:
+       - "3002"
+     restart: always
+     networks:
+      - wln_network
+
+   mysql:
+     image: mysql:latest
+     volumes:
+       - ./data:/.
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: password
+       MYSQL_DATABASE: drainage
+       MYSQL_USER: user
+       MYSQL_PASSWORD: password
+     networks:
+       - wln_network

@@ -1,0 +1,47 @@
+FROM alpine:latest
+
+RUN apk add --no-cache php \
+    apache2 \
+    curl \
+    php-session \
+    php-apache2 \
+    php-common \
+    php-fpm \
+    php-pdo \
+    php-opcache \
+    php-zip \
+    php-phar \
+    php-iconv \
+    php-cli \
+    php-curl \
+    php-openssl \
+    php-mbstring \
+    php-tokenizer \
+    php-fileinfo \
+    php-json \
+    php-xml \
+    php-xmlwriter \
+    php-simplexml \
+    php-dom \
+    php-pdo_mysql \
+    php-pdo_sqlite \
+    php-pecl-redis
+
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+    rm -rf composer-setup.php
+
+RUN rm /var/www/localhost/htdocs/index.html
+
+COPY . /var/www/localhost/htdocs/
+RUN chown -R apache:apache /var/www/localhost/htdocs/ && \
+    chmod -R 777 /var/www/localhost/htdocs/storage
+
+WORKDIR /var/www/localhost/htdocs/
+
+RUN composer update
+RUN composer install
+
+EXPOSE 80
+
+CMD ["httpd", "-D", "FOREGROUND"]
