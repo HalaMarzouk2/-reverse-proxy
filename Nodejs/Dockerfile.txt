@@ -1,0 +1,23 @@
+FROM node:alpine AS build_stage
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+
+COPY . .
+
+#RUN npm run build
+
+
+FROM node:alpine
+WORKDIR /app
+
+
+COPY --from=build_stage /app /app
+
+
+EXPOSE 3000
+
+CMD ["node", "index.mjs"]
