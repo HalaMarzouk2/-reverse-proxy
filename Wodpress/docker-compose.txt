@@ -1,0 +1,30 @@
+version: '3.3'
+
+networks:
+   wp_net:
+   wln_network:
+    external: true
+
+services:
+   my_app_wp:
+     container_name: wordpress_container
+     depends_on:
+       - mysql
+     image: wp:latest
+     restart: always
+     networks:
+       - wp_net
+       - wln_network
+
+   mysql:
+     image: bitnami/mysql:latest
+     volumes:
+       - ./db_data:/bitnami/mysql/data
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: my_root_password
+       MYSQL_DATABASE: my_database
+       MYSQL_USER: my_user
+       MYSQL_PASSWORD: my_password
+     networks:
+       - wp_net
